@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:archive/archive_io.dart';
 import 'package:generate_clone/src/constants/constants.dart';
@@ -105,7 +104,7 @@ Future<ConfigModel?> _extractAndHandleFiles(String zipFilePath) async {
         filePath = path.join(Constants.cloneDirectory, fileName);
         print('Moving splash image: $fileName to ${Constants.cloneDirectory}');
       } else if (fileName == Constants.configJson) {
-        final json = jsonDecode(utf8.decode(entity.content));
+        final json = entity.content;
 
         configModel = ConfigModel.fromJson(json);
       }
