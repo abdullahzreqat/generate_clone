@@ -1,9 +1,3 @@
-/// Support for doing something awesome.
-///
-/// More dartdocs go here.
-library;
-
-
 import 'dart:convert';
 import 'dart:io';
 import 'package:archive/archive_io.dart';
@@ -93,7 +87,7 @@ Future<ConfigModel?> _extractAndHandleFiles(String zipFilePath) async {
         // Handle assets directory files and move to lib/generated/cloneAssets/
         final assetFileName = path.basename(entity.name);
         final assetFilePath =
-        path.join(Constants.cloneAssetsDirectory, assetFileName);
+            path.join(Constants.cloneAssetsDirectory, assetFileName);
 
         await Directory(Constants.cloneAssetsDirectory).create(recursive: true);
 
@@ -257,6 +251,5 @@ Future<void> _generateCloneConfigFile(ConfigModel configModel) async {
 
   print('Generated clone_configs.dart file.');
 }
-
 
 // ignore_for_file: avoid_print, missing_whitespace_between_adjacent_strings
