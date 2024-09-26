@@ -2,7 +2,8 @@ name: generate_clone
 description: A starting point for Dart libraries or applications.
 version: 1.0.0
 # repository: https://github.com/my_org/my_repo
-
+executables:
+  generate_clone: generate_clone.dart
 
 environment:
   sdk: ^3.4.4
