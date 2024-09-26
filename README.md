@@ -1,9 +1,31 @@
+<!-- 
+This README describes the package. If you publish this package to pub.dev,
+this README's contents appear on the landing page for your package.
+
+For information about how to write a good package README, see the guide for
+[writing package pages](https://dart.dev/guides/libraries/writing-package-pages). 
+
+For general information about developing packages, see the Dart guide for
+[creating packages](https://dart.dev/guides/libraries/create-library-packages)
+and the Flutter guide for
+[developing packages and plugins](https://flutter.dev/developing-packages). 
+-->
+
+TODO: Put a short description of the package here that helps potential users
+know whether this package might be useful for them.
+
+## Features
+
+TODO: List what your package can do. Maybe include images, gifs, or videos.
+
 # generate_clone
 
 
 
 ## Getting started
 
+TODO: List prerequisites and provide or point to information on how to
+start using the package.
 To make it easy for you to get started with GitLab, here's a list of recommended next steps.
 
 Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
@@ -79,15 +101,19 @@ If you have ideas for releases in the future, it is a good idea to list them in 
 ## Contributing
 State if you are open to contributions and what your requirements are for accepting them.
 
+TODO: Include short and useful examples for package users. Add longer examples
+to `/example` folder. 
 For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
 
+```dart
+const like = 'sample';
+```
 You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
 
+## Additional information
 ## Authors and acknowledgment
 Show your appreciation to those who have contributed to the project.
 
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+TODO: Tell users more about the package: where to find more information, how to 
+contribute to the package, how to file issues, what response they can expect 
+from the package authors, and more.
