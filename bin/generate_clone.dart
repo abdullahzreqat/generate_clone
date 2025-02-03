@@ -8,15 +8,16 @@ import 'package:path/path.dart' as path;
 
 Future<void> main(List<String> arguments) async {
   try {
-    final String clientId = arguments.isNotEmpty ? arguments[0] : '';
-    if (clientId.isEmpty) {
-      throw Exception('Client ID is required');
+    final String filePath = arguments.isNotEmpty ? arguments[0] : '';
+    if (filePath.isEmpty || !File(filePath).existsSync()) {
+      throw Exception('Valid file path is required');
     }
 
-    // Download the ZIP file
-    final String downloadedZipFilePath = await _downloadFile(clientId);
+    // Create temp directory
+    await Directory(Constants.temp).create(recursive: true);
+
     // Extract the ZIP file
-    final configModel = await _extractAndHandleFiles(downloadedZipFilePath);
+    final configModel = await _extractAndHandleFiles(filePath);
 
     if (configModel != null && configModel.isValid) {
       await _generateCloneConfigFile(configModel);
@@ -87,7 +88,7 @@ Future<ConfigModel?> _extractAndHandleFiles(String zipFilePath) async {
         // Handle assets directory files and move to lib/generated/cloneAssets/
         final assetFileName = path.basename(entity.name);
         final assetFilePath =
-        path.join(Constants.cloneAssetsDirectory, assetFileName);
+            path.join(Constants.cloneAssetsDirectory, assetFileName);
 
         await Directory(Constants.cloneAssetsDirectory).create(recursive: true);
 
@@ -251,6 +252,5 @@ Future<void> _generateCloneConfigFile(ConfigModel configModel) async {
 
   print('Generated clone_configs.dart file.');
 }
-
 
 // ignore_for_file: avoid_print, missing_whitespace_between_adjacent_strings

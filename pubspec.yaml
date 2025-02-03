@@ -10,13 +10,11 @@ environment:
 
 # Add regular dependencies here.
 dependencies:
-  path: ^1.8.0
+  path: ^1.9.1
   http: ^1.2.2
 
   archive: ^3.6.1
-  rename: ^3.0.2
-  flutter_native_splash: ^2.4.1
-  flutter_launcher_icons: ^0.14.0
+
 
 
 dev_dependencies:
