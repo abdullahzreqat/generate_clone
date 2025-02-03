@@ -7,6 +7,7 @@ class ConfigModel {
   List<ColorModel>? colors;
   List<GradientColorModel>? gradientsColors;
   String? baseUrl;
+  String? cloneId;
 
   bool get isValid =>
       (appName?.isNotEmpty ?? false) && (packageName?.isNotEmpty ?? false);
@@ -15,6 +16,7 @@ class ConfigModel {
     appName = json['appName'];
     packageName = json['packageName'];
     baseUrl = json['baseUrl'];
+    cloneId = json['cloneId'];
     if (json['colors'] != null) {
       colors = [];
       json['colors'].forEach((v) {
