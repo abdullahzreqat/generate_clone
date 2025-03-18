@@ -7,6 +7,8 @@ class ConfigModel {
   List<ColorModel>? colors;
   List<GradientColorModel>? gradientsColors;
   String? baseUrl;
+  String? chargingSocketUrl;
+
   String? cloneId;
 
   bool get isValid =>
@@ -16,6 +18,7 @@ class ConfigModel {
     appName = json['appName'];
     packageName = json['packageName'];
     baseUrl = json['baseUrl'];
+    chargingSocketUrl = json['chargingSocketUrl'];
     cloneId = json['cloneId'];
     if (json['colors'] != null) {
       colors = [];

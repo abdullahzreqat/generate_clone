@@ -39,6 +39,7 @@ Future<void> main(List<String> arguments) async {
   }
 }
 
+//Deprecated Function
 Future<String> _downloadFile(String clientId) async {
   // Define the base URL for the assets
   final String url =
@@ -229,10 +230,14 @@ Future<void> _generateCloneConfigFile(ConfigModel configModel) async {
   // 5. Add base url
   sink.writeln('  static const String baseUrl = "${configModel.baseUrl}";');
 
-  // 6. Add Clone ID
+  // 6. Add chargingSocketUrl
+  sink.writeln(
+      '  static const String chargingSocketUrl = "${configModel.chargingSocketUrl}";');
+
+  // 7. Add Clone ID
   sink.writeln('  static const String cloneId = "${configModel.cloneId}";');
 
-  // 7. Access the _assetTargetDirectory and for each file in that directory add its path
+  // 8. Access the _assetTargetDirectory and for each file in that directory add its path
   final assetsDirectory = Directory(Constants.cloneAssetsDirectory);
 
   if (assetsDirectory.existsSync()) {
