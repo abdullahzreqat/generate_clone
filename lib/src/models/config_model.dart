@@ -8,7 +8,7 @@ class ConfigModel {
   List<GradientColorModel>? gradientsColors;
   String? baseUrl;
   String? chargingSocketUrl;
-
+  String? sslFingerprint;
   String? cloneId;
 
   bool get isValid =>
@@ -19,6 +19,7 @@ class ConfigModel {
     packageName = json['packageName'];
     baseUrl = json['baseUrl'];
     chargingSocketUrl = json['chargingSocketUrl'];
+    sslFingerprint = json['sslFingerprint'];
     cloneId = json['cloneId'];
     if (json['colors'] != null) {
       colors = [];

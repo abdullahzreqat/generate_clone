@@ -237,7 +237,11 @@ Future<void> _generateCloneConfigFile(ConfigModel configModel) async {
   // 7. Add Clone ID
   sink.writeln('  static const String cloneId = "${configModel.cloneId}";');
 
-  // 8. Access the _assetTargetDirectory and for each file in that directory add its path
+  // 8. Add SSL Fingerprint
+  sink.writeln(
+      '  static const String? sslFingerprint = "${configModel.sslFingerprint}";');
+
+  // 9. Access the _assetTargetDirectory and for each file in that directory add its path
   final assetsDirectory = Directory(Constants.cloneAssetsDirectory);
 
   if (assetsDirectory.existsSync()) {
