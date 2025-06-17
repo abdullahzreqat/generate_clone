@@ -240,7 +240,7 @@ Future<void> _generateCloneConfigFile(ConfigModel configModel) async {
   // 8. Add SSL Fingerprint
   if (configModel.sslFingerprint != null) {
     sink.writeln(
-        '  static const String sslFingerprint = "${configModel.sslFingerprint}";');
+        '  static const String? sslFingerprint = "${configModel.sslFingerprint}";');
   } else {
     sink.writeln('  static const String? sslFingerprint = null;');
   }
