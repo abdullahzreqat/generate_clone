@@ -238,8 +238,12 @@ Future<void> _generateCloneConfigFile(ConfigModel configModel) async {
   sink.writeln('  static const String cloneId = "${configModel.cloneId}";');
 
   // 8. Add SSL Fingerprint
-  sink.writeln(
-      '  static const String? sslFingerprint = ${configModel.sslFingerprint != null ? "${configModel.sslFingerprint}" : null};');
+  if (configModel.sslFingerprint != null) {
+    sink.writeln(
+        '  static const String sslFingerprint = "${configModel.sslFingerprint}";');
+  } else {
+    sink.writeln('  static const String? sslFingerprint = null;');
+  }
 
   // 9. Access the _assetTargetDirectory and for each file in that directory add its path
   final assetsDirectory = Directory(Constants.cloneAssetsDirectory);
