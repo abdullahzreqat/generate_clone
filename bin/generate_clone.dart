@@ -9,7 +9,7 @@ import 'package:path/path.dart' as path;
 Future<void> main(List<String> arguments) async {
   try {
     final String filePath = arguments.isNotEmpty ? arguments[0] : '';
-    if (filePath.isEmpty || !File(filePath).existsSync()) {
+    if (filePath.isEmpty || !Directory(filePath).existsSync()) {
       throw Exception('Valid file path is required');
     }
 
