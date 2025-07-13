@@ -17,7 +17,10 @@ Future<void> main(List<String> arguments) async {
     await Directory(Constants.temp).create(recursive: true);
 
     // Extract the ZIP file
-    final configModel = await _extractAndHandleFiles(filePath);
+    //final configModel = await _extractAndHandleFiles(filePath);
+
+    // Used for handle direct directory without zip
+    final configModel = await _handleFilesFromDirectory(filePath);
 
     if (configModel != null && configModel.isValid) {
       await _generateCloneConfigFile(configModel);
@@ -65,6 +68,65 @@ Future<String> _downloadFile(String clientId) async {
   } else {
     throw Exception('Failed to download $fileName: ${response.statusCode}');
   }
+}
+
+Future<ConfigModel?> _handleFilesFromDirectory(String directoryPath) async {
+  final directory = Directory(directoryPath);
+  if (!await directory.exists()) {
+    print('Directory does not exist: $directoryPath');
+    return null;
+  }
+
+  ConfigModel? configModel;
+
+  await for (var entity in directory.list(recursive: true)) {
+    if (entity is File) {
+      final relativePath = path.relative(entity.path, from: directoryPath);
+      final fileName = path.basename(entity.path);
+
+      if (fileName.startsWith('.')) continue;
+
+      String filePath = path.join(Constants.temp, fileName);
+
+      // Read file content
+      final content = await entity.readAsBytes();
+
+      if (entity.path.contains('assets${Platform.pathSeparator}')) {
+        // Handle assets directory files
+        final assetFileName = path.basename(entity.path);
+        final assetFilePath =
+            path.join(Constants.cloneAssetsDirectory, assetFileName);
+
+        await Directory(Constants.cloneAssetsDirectory).create(recursive: true);
+        final outputFile = File(assetFilePath);
+        await outputFile.create(recursive: true);
+        await outputFile.writeAsBytes(content);
+        print('Copied asset file: $assetFilePath');
+      } else if (fileName == Constants.splash ||
+          fileName == Constants.splashAndroid12 ||
+          fileName == Constants.iconLauncher) {
+        await Directory(Constants.cloneDirectory).create(recursive: true);
+        filePath = path.join(Constants.cloneDirectory, fileName);
+        print('Copying splash image: $fileName to ${Constants.cloneDirectory}');
+      } else if (fileName == Constants.configJson) {
+        final json = jsonDecode(utf8.decode(content));
+        configModel = ConfigModel.fromJson(json);
+      }
+
+      final outputFile = File(filePath);
+      await outputFile.create(recursive: true);
+      await outputFile.writeAsBytes(content);
+      print('Copied file: $filePath');
+    } else if (entity is Directory) {
+      // Optionally recreate directory structure
+      final dirPath = path.join(
+          Constants.temp, path.relative(entity.path, from: directoryPath));
+      await Directory(dirPath).create(recursive: true);
+    }
+  }
+
+  print('Handling of directory files completed.');
+  return configModel;
 }
 
 Future<ConfigModel?> _extractAndHandleFiles(String zipFilePath) async {
