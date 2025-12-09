@@ -3,15 +3,32 @@ class DynamicFieldModel {
   final String key;
   final dynamic value;
   final DynamicFieldType type;
+  final bool isSensitive;
+  final String? envKey; // Environment variable key for sensitive fields
 
   DynamicFieldModel({
     required this.key,
     required this.value,
     required this.type,
+    this.isSensitive = false,
+    this.envKey,
   });
 
   /// Parse a key-value pair and auto-detect the type
+  /// Sensitive fields use format: "$ENV:ENV_VAR_NAME"
   factory DynamicFieldModel.fromEntry(String key, dynamic value) {
+    // Check if it's a sensitive field (env var reference)
+    if (value is String && value.startsWith(r'$ENV:')) {
+      final envKey = value.substring(5); // Remove "$ENV:" prefix
+      return DynamicFieldModel(
+        key: key,
+        value: value,
+        type: DynamicFieldType.sensitive,
+        isSensitive: true,
+        envKey: envKey,
+      );
+    }
+
     final type = _detectType(value);
     return DynamicFieldModel(key: key, value: value, type: type);
   }
@@ -87,6 +104,10 @@ class DynamicFieldModel {
   /// Generate Dart code for this field
   String toDartCode() {
     switch (type) {
+      case DynamicFieldType.sensitive:
+        // Sensitive fields use the resolver pattern
+        return '  static String get $key => _resolve(\'$envKey\');';
+
       case DynamicFieldType.color:
         return '  static const $key = Color(${colorToHex(value as String)});';
 
@@ -150,4 +171,5 @@ enum DynamicFieldType {
   list,
   map,
   nullValue,
+  sensitive,
 }

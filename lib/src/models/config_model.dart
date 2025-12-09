@@ -13,6 +13,17 @@ class ConfigModel {
   bool get isValid =>
       (appName?.isNotEmpty ?? false) && (packageName?.isNotEmpty ?? false);
 
+  /// Check if any fields are sensitive (require resolver)
+  bool get hasSensitiveFields =>
+      fields.any((f) => f.type == DynamicFieldType.sensitive);
+
+  /// Get list of all sensitive field env keys
+  List<String> get sensitiveEnvKeys =>
+      fields
+          .where((f) => f.type == DynamicFieldType.sensitive)
+          .map((f) => f.envKey!)
+          .toList();
+
   ConfigModel.fromJson(dynamic json) {
     appName = json['appName'];
     packageName = json['packageName'];

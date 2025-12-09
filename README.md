@@ -1,119 +1,183 @@
-<!-- 
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# generate_clone
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages). 
+**Stop struggling with Flutter flavors, build variants, and complex white-labeling setups.**
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages). 
--->
+Tired of maintaining multiple `main_dev.dart`, `main_prod.dart`, `main_client1.dart` files? Frustrated with flavor configurations, build scripts, and environment variables scattered everywhere?
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+**generate_clone** is a simple CLI tool that generates fully configured Flutter app clones from a single JSON file. Perfect for:
+
+- **White-label apps** - Create branded versions for multiple clients
+- **Multi-tenant applications** - Deploy the same app with different configurations
+- **App cloning services** - Automate client app generation
+- **B2B SaaS products** - Customize apps for enterprise customers
+
+## Why generate_clone?
+
+| Traditional Approach | With generate_clone |
+|---------------------|---------------------|
+| Complex flavor setup | Single JSON config |
+| Multiple main files | One command |
+| Build variant headaches | Auto-generated constants |
+| Manual asset copying | Automatic asset management |
+| Environment variable chaos | Type-safe Dart code |
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
-
-# generate_clone
-
-
-
-## Getting started
-
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
-
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
-
-## Add your files
-
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
-
-```
-cd existing_repo
-git remote add origin https://gitlab.com/abdullahzreqat/generate_clone.git
-git branch -M main
-git push -uf origin main
-```
-
-## Integrate with your tools
-
-- [ ] [Set up project integrations](https://gitlab.com/abdullahzreqat/generate_clone/-/settings/integrations)
-
-## Collaborate with your team
-
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
-
-## Test and Deploy
-
-Use the built-in continuous integration in GitLab.
-
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
-
-***
-
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+- **Flexible Input Sources**: Local directories, ZIP files, or remote URLs
+- **Auto-Type Detection**: Colors, gradients, strings, ints, bools - all detected automatically
+- **Sensitive Fields Support**: Use `$ENV:VAR_NAME` for API keys and secrets (works with flutter_dotenv, Platform.environment, etc.)
+- **Auto Project Configuration**: Automatically updates `pubspec.yaml`, creates `flutter_launcher_icons.yaml` and `flutter_native_splash.yaml`
+- **Latest Package Versions**: Fetches the latest versions of required packages from pub.dev
+- **Complete Flutter Integration**: Runs `flutter_native_splash`, `flutter_launcher_icons`, and `rename` plugins
+- **Asset Management**: Splash screens, icons, and custom assets organized automatically
+- **Zero Configuration**: Just provide your config.json and run
 
 ## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+```bash
+dart pub global activate generate_clone
+```
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+Or add to your `pubspec.yaml`:
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+```yaml
+dev_dependencies:
+  generate_clone: ^1.0.2
+```
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+## Quick Start
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder. 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+```bash
+# From a local directory
+generate_clone ./my_client_config
+
+# From a ZIP file
+generate_clone ./client_branding.zip
+
+# From a remote URL (CI/CD friendly)
+generate_clone https://your-server.com/clients/acme/config.zip
+```
+
+## Configuration File (config.json)
+
+```json
+{
+  "appName": "Acme Corp",
+  "packageName": "com.acme.app",
+  "baseUrl": "https://api.acme.com/v1",
+  "cloneId": "acme",
+
+  "fields": {
+    "kPrimaryColor": "#FF5733",
+    "kSecondaryColor": "#3498DB",
+    "kPrimaryGradient": {
+      "colors": ["#FF5733", "#FFC300"],
+      "begin": "topLeft",
+      "end": "bottomRight"
+    },
+    "analyticsUrl": "https://analytics.acme.com",
+    "maxRetries": 3,
+    "enableDarkMode": true,
+    "taxRate": 0.15,
+    "apiKey": "$ENV:API_KEY",
+    "secretToken": "$ENV:SECRET_TOKEN"
+  }
+}
+```
+
+### Supported Field Types (Auto-Detected)
+
+| Type | Example Value | Generated Dart Code |
+|------|---------------|---------------------|
+| Color | `"#FF5733"` | `Color(0xFFFF5733)` |
+| Gradient | `{"colors": [...], ...}` | `LinearGradient(...)` |
+| String | `"https://example.com"` | `String` |
+| int | `3` | `int` |
+| double | `0.15` | `double` |
+| bool | `true` | `bool` |
+| Sensitive | `"$ENV:API_KEY"` | `String get apiKey => _resolve('API_KEY')` |
+
+### Sensitive Fields (Environment Variables)
+
+For API keys, secrets, and other sensitive data, use the `$ENV:` prefix. This generates code with a resolver pattern that you initialize once in `main.dart`:
 
 ```dart
-const like = 'sample';
+// With flutter_dotenv
+await dotenv.load();
+CloneConfigs.init((key) => dotenv.env[key] ?? '');
+
+// With Platform.environment
+CloneConfigs.init((key) => Platform.environment[key] ?? '');
+
+// With your custom solution
+CloneConfigs.init((key) => MySecretManager.get(key));
 ```
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
 
-## Additional information
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+> **Note:** If your config.json doesn't contain any `$ENV:` fields, the generated code won't include the resolver pattern and you don't need to call `CloneConfigs.init()`.
 
-TODO: Tell users more about the package: where to find more information, how to 
-contribute to the package, how to file issues, what response they can expect 
-from the package authors, and more.
+For a complete example, check out the [example](example/example.md) file.
+
+## Input Directory Structure
+
+```
+client_config/
+├── config.json           # Required: Configuration
+├── splash.png            # Optional: Splash screen
+├── splashAndroid12.png   # Optional: Android 12+ splash
+├── ic_launcher.png       # Optional: App icon
+└── assets/               # Optional: Custom assets
+    ├── logo.png
+    └── background.png
+```
+
+## Generated Output
+
+Type-safe, auto-generated `lib/generated/clone/clone_configs.dart`:
+
+```dart
+// Auto-generated file. Do not edit manually.
+import 'package:flutter/material.dart';
+
+abstract class CloneConfigs {
+  // Resolver for sensitive fields (only if $ENV: fields exist)
+  static String Function(String key)? _envResolver;
+  static void init(String Function(String key) resolver) => _envResolver = resolver;
+  static String _resolve(String key) => _envResolver!(key);
+
+  // Fixed configuration
+  static const String baseUrl = "https://api.acme.com/v1";
+  static const String cloneId = "acme";
+
+  // Dynamic configuration
+  static const kPrimaryColor = Color(0xFFFF5733);
+  static const kSecondaryColor = Color(0xFF3498DB);
+  static const kPrimaryGradient = LinearGradient(...);
+  static const String analyticsUrl = "https://analytics.acme.com";
+  static const int maxRetries = 3;
+  static const bool enableDarkMode = true;
+  static const double taxRate = 0.15;
+
+  // Sensitive fields
+  static String get apiKey => _resolve('API_KEY');
+  static String get secretToken => _resolve('SECRET_TOKEN');
+}
+```
+
+## Use Cases
+
+- **Agencies**: Generate branded apps for multiple clients from a single codebase
+- **SaaS Companies**: Deploy customized versions for enterprise customers
+- **Franchises**: Create location-specific apps with unique branding
+- **Startups**: Quickly spin up MVPs with different configurations
+
+## Keywords
+
+`white-label` `whitelabel` `multi-tenant` `clone` `flutter-clone` `app-generator` `branding` `flavors-alternative` `build-variants` `b2b` `saas` `enterprise` `customization`
+
+## License
+
+BSD 3-Clause License - see [LICENSE](LICENSE) file for details.
+
+## Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request on [GitHub](https://github.com/abdullahzreqat/generate_clone).
