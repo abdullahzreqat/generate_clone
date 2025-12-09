@@ -455,29 +455,39 @@ Future<void> _updatePubspecYaml(Map<String, String> versions) async {
     }
   }
 
-  // Check and add assets
-  final assetsToAdd = [
+  // Check and add assets - find the actual assets: section (not commented)
+  final assetPaths = [
     'lib/generated/clone/',
     'lib/generated/clone/assets/',
   ];
 
-  for (final asset in assetsToAdd) {
-    if (!content.contains(asset)) {
-      print('Adding asset path: $asset');
+  final assetsToAdd = assetPaths.where((a) => !content.contains(a)).toList();
 
-      if (content.contains('assets:')) {
-        // Add to existing assets section
-        content = content.replaceFirst(
-          RegExp(r'assets:\s*\n'),
-          'assets:\n    - $asset\n',
-        );
-      } else if (content.contains('flutter:')) {
-        // Add assets section under flutter
-        content = content.replaceFirst(
-          'flutter:',
-          'flutter:\n  assets:\n    - $asset',
-        );
+  if (assetsToAdd.isNotEmpty) {
+    print('Adding asset paths: ${assetsToAdd.join(", ")}');
+
+    // Find non-commented assets: section with proper indentation under flutter:
+    // Match "  assets:" at the start of a line (2 spaces indent under flutter:)
+    final assetsMatch = RegExp(r'^  assets:\s*$', multiLine: true).firstMatch(content);
+
+    if (assetsMatch != null) {
+      // Find the position right after "assets:" line
+      final assetsLineEnd = content.indexOf('\n', assetsMatch.end);
+      if (assetsLineEnd != -1) {
+        // Insert new assets after the assets: line
+        final newAssets = assetsToAdd.map((a) => '    - $a').join('\n');
+        content = content.substring(0, assetsLineEnd + 1) +
+            '$newAssets\n' +
+            content.substring(assetsLineEnd + 1);
+        modified = true;
       }
+    } else if (content.contains('flutter:')) {
+      // No assets section exists, create one under flutter:
+      final newAssets = assetsToAdd.map((a) => '    - $a').join('\n');
+      content = content.replaceFirst(
+        RegExp(r'^flutter:\s*$', multiLine: true),
+        'flutter:\n  assets:\n$newAssets',
+      );
       modified = true;
     }
   }

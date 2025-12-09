@@ -1,3 +1,7 @@
+## 1.0.3
+
+- Fix pubspec.yaml asset path insertion breaking YAML structure
+
 ## 1.0.2
 
 - Add dynamic fields support with auto-type detection
