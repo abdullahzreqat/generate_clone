@@ -1,3 +1,8 @@
+## 1.0.4
+
+- Auto-detect available platforms (android/ios) for rename command
+- Ensure temp directory cleanup always runs (even on errors)
+
 ## 1.0.3
 
 - Fix pubspec.yaml asset path insertion breaking YAML structure

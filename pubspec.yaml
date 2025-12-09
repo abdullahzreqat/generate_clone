@@ -1,6 +1,6 @@
 name: generate_clone
 description: A CLI tool for generating Flutter app clones with dynamic configuration, supporting local directories, ZIP files, and remote URLs.
-version: 1.0.3
+version: 1.0.4
 repository: https://github.com/abdullahzreqat/generate_clone
 homepage: https://github.com/abdullahzreqat/generate_clone
 

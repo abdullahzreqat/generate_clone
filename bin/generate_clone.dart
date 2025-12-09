@@ -48,12 +48,17 @@ Future<void> main(List<String> arguments) async {
     await _runFlutterNativeSplash();
     // Run flutter_launcher_icons command
     await _runFlutterIconLauncher();
-    // Remove the temp directory
-    await Directory(Constants.temp).delete(recursive: true);
 
     print('Clone generation completed successfully!');
   } catch (e) {
     print('Error: $e');
+  } finally {
+    // Always cleanup temp directory
+    final tempDir = Directory(Constants.temp);
+    if (await tempDir.exists()) {
+      await tempDir.delete(recursive: true);
+      print('Cleaned up temp directory.');
+    }
   }
 }
 
@@ -226,6 +231,19 @@ Future<void> _runRenamePackage({
   required String appName,
   required String packageName,
 }) async {
+  // Detect available platforms
+  final platforms = <String>[];
+  if (await Directory('android').exists()) platforms.add('android');
+  if (await Directory('ios').exists()) platforms.add('ios');
+
+  if (platforms.isEmpty) {
+    print('Warning: No android or ios folder found. Skipping rename.');
+    return;
+  }
+
+  final platformsArg = platforms.join(',');
+  print('Renaming for platforms: $platformsArg');
+
   // Activate the plugin
   await _runCommand(
     'dart',
@@ -237,7 +255,7 @@ Future<void> _runRenamePackage({
   // Set the app name
   await _runCommand(
     'flutter',
-    ['pub', 'run', 'rename', 'setAppName', '-t', 'ios,android', '-v', appName],
+    ['pub', 'run', 'rename', 'setAppName', '-t', platformsArg, '-v', appName],
     'Successfully set the app name to $appName',
     'Error setting app name',
   );
@@ -251,7 +269,7 @@ Future<void> _runRenamePackage({
       'rename',
       'setBundleId',
       '-t',
-      'ios,android',
+      platformsArg,
       '-v',
       packageName
     ],
@@ -476,9 +494,7 @@ Future<void> _updatePubspecYaml(Map<String, String> versions) async {
       if (assetsLineEnd != -1) {
         // Insert new assets after the assets: line
         final newAssets = assetsToAdd.map((a) => '    - $a').join('\n');
-        content = content.substring(0, assetsLineEnd + 1) +
-            '$newAssets\n' +
-            content.substring(assetsLineEnd + 1);
+        content = '${content.substring(0, assetsLineEnd + 1)}$newAssets\n${content.substring(assetsLineEnd + 1)}';
         modified = true;
       }
     } else if (content.contains('flutter:')) {
